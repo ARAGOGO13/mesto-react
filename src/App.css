@@ -1,7 +1,7 @@
 /*vendor*/
 @import url(vendor/normalize.css);
 /*fonts*/
-@import url(fonts/font.css);
+@import url(vendor/fonts/font.css);
 /*root*/
 @import url(blocks/root/root.css);
 /*header*/

@@ -1,27 +1,24 @@
-import React from 'react';
+import {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {api} from '../utils/api.js';
 import Card from './Card.js';
 
 export default function Main(props) {
 
-    const [userName, setUserName] = React.useState('');
-    const [userDescription, setUserDescription] = React.useState('');
-    const [userAvatar, setUserAvatar] = React.useState('');
-    const [cards, setCards] = React.useState([]);
+    const [userName, setUserName] = useState('');
+    const [userDescription, setUserDescription] = useState('');
+    const [userAvatar, setUserAvatar] = useState('');
+    const [cards, setCards] = useState([]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         api.getProfileInformation().then((user) => {
                 setUserName(user.name);
                 setUserDescription(user.about);
                 setUserAvatar(user.avatar);
             }).catch((err) => {console.log(err)});
-    })
-
-    React.useEffect(() => {
         api.getInitialCards().then((cardArray) => setCards(cardArray))
-            .catch((err) => console.log(err))
-    }, [])
+            .catch((err) => console.log(err));
+    })
 
     return (
         <main className="main">
