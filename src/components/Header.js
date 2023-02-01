@@ -1,10 +1,9 @@
-import HeaderLogo from '../images/header__logo.svg'
+import HeaderLogo from '../images/header__logo.svg';
 
 export default function Header(props) {
-    return(
+    return (
         <header className="header">
-            <img className="header__logo" src={HeaderLogo}
-                 alt="Логотип приложения `Место`"/>
+            <img className="header__logo" src={HeaderLogo} alt="Логотип приложения `Место`" />
         </header>
-    )
+    );
 }

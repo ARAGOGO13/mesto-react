@@ -14,7 +14,7 @@ export const cardLinkInput = document.querySelector('.form__input_type_card-link
 
 // editAvatar
 export const avatarPhoto = document.querySelector('.profile__avatar');
-export const avatarEditForm = document.querySelector('.form_type_avatar-edit')
+export const avatarEditForm = document.querySelector('.form_type_avatar-edit');
 export const avatarEditOpenBtn = document.querySelector('.profile__avatar-button');
 export const avatarLinkInput = document.querySelector('.form__input_type_avatar-link');
 
@@ -25,7 +25,7 @@ export const settings = {
     submitButtonSelector: '.form__submit-btn',
     inactiveButtonClass: 'form__submit-btn_inactive',
     inputErrorClass: 'form__input_type_error',
-    errorClass: 'form__input-error_active'
+    errorClass: 'form__input-error_active',
 };
 
 export const formList = document.querySelectorAll('.form');
