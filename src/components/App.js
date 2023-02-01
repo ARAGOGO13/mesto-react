@@ -7,6 +7,7 @@ import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import ImagePopup from './ImagePopup';
 import AddPlacePopup from './AddPlacePopup';
+import DeleteConfirmationPopup from './DeleteConfirmationPopup';
 import { api } from '../utils/api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
@@ -19,6 +20,7 @@ function App() {
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
     const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+    const [isDeleteConfirmationPopupOpen, setIsDeleteConfirmationPopupOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState(null);
 
     useEffect(() => {
@@ -49,12 +51,8 @@ function App() {
         setIsAddPlacePopupOpen(true);
     }
 
-    function handleImagePopupClick(card) {
-        setIsImagePopupOpen(true);
-        setSelectedCard(card);
-    }
-
     function closeAllPopups() {
+        setIsDeleteConfirmationPopupOpen(false);
         setIsEditAvatarPopupOpen(false);
         setIsEditProfilePopupOpen(false);
         setIsAddPlacePopupOpen(false);
@@ -62,22 +60,38 @@ function App() {
     }
 
     function closePopupsOnOutsideClick(e) {
+        console.log('dsa');
         if (e.target.classList.contains('popup_opened') || e.target.classList.contains('popup__close-btn')) {
             closeAllPopups();
         }
     }
 
+    function handleImagePopupClick(card) {
+        setIsImagePopupOpen(true);
+        setSelectedCard(card);
+    }
+
+    function handleDeleteConfirmationClick(card) {
+        api.deleteCard(card.card._id)
+            .then(() => {
+                setCards((state) => state.filter((c) => c._id !== card.card._id));
+                setIsDeleteConfirmationPopupOpen(false);
+            })
+            .catch((err) => console.log(err));
+    }
+
     function handleCardLike(card) {
         const isLiked = card.likes.some((i) => i._id === currentUser._id);
-        api.changeLikeCardStatus(card._id, isLiked).then((newCard) => {
-            setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-        });
+        api.changeLikeCardStatus(card._id, isLiked)
+            .then((newCard) => {
+                setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+            })
+            .catch((err) => console.log(err));
     }
 
     function handleCardDelete(card) {
-        api.deleteCard(card._id).then(() => {
-            setCards((state) => state.filter((c) => c._id !== card._id));
-        });
+        setIsDeleteConfirmationPopupOpen(true);
+        setSelectedCard(card);
     }
 
     function handleUpdateUser(newUserInfo) {
@@ -139,22 +153,13 @@ function App() {
                         onOutsideClickClose={closePopupsOnOutsideClick}
                     />
                     <ImagePopup onClose={closeAllPopups} card={selectedCard} isOpen={isImagePopupOpen} />
-                    <div className="popup popup_type_delete-card popup_type_with-submit">
-                        <div className="popup__container">
-                            <form className="form" name="cardDeleteForm" noValidate>
-                                <h3 className="form__heading form__heading_type_submit-popup">Вы уверены?</h3>
-                                <button className="form__submit-btn" type="submit">
-                                    Да
-                                </button>
-                            </form>
-                            <button
-                                arial-label="Close"
-                                className="popup__close-btn"
-                                id="close-btn_type_card-delete"
-                                type="button"
-                            ></button>
-                        </div>
-                    </div>
+                    <DeleteConfirmationPopup
+                        onClose={closeAllPopups}
+                        card={selectedCard}
+                        isOpen={isDeleteConfirmationPopupOpen}
+                        onConfirmation={handleDeleteConfirmationClick}
+                        onOutsideClickClose={closePopupsOnOutsideClick}
+                    />
                 </div>
             </div>
         </CurrentUserContext.Provider>

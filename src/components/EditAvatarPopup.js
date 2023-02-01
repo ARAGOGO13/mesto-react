@@ -12,6 +12,10 @@ export default function EditAvatarPopup({ isOpen, onClose, onOutsideClickClose, 
         setAvatar(currentUser.avatar);
     }, [currentUser]);
 
+    useEffect(() => {
+        avatarRef.current.value = '';
+    }, [isOpen]);
+
     function handleAvatarChange(e) {
         setAvatar(e.target.value);
     }

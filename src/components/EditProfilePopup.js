@@ -32,6 +32,8 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser, onOuts
 
     return (
         <PopupWithForm
+            name={'edit - profile'}
+            title={'Редактировать профиль'}
             buttonName={'Сохранить'}
             isOpen={isOpen}
             onClose={onClose}
@@ -47,7 +49,7 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser, onOuts
                 minLength="2"
                 maxLength="40"
                 onChange={handleNameChange}
-                value={name}
+                value={name || ''}
             />
             <span className="form__input-error form__input-error_type_profile-name"></span>
             <input
@@ -59,7 +61,7 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser, onOuts
                 minLength="2"
                 maxLength="200"
                 onChange={handleDescriptionChange}
-                value={description}
+                value={description || ''}
             />
             <span className="form__input-error form__input-error_type_profile-description"></span>
         </PopupWithForm>
